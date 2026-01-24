@@ -31,3 +31,15 @@ django-extensions==3.2.3
 python-dateutil==2.9.0
 drf-spectacular==0.29.0
 sentry-sdk==2.50.0
+
+# Production Server
+gunicorn==23.0.0
+
+# Logging & Monitoring (Required by your settings.py)
+python-json-logger==3.2.1
+
+# Static File Helper
+whitenoise==6.8.2
+
+# Task Progress Tracking (Optional but highly recommended)
+celery-progress==0.3.0

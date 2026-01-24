@@ -5,6 +5,8 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+LOG_DIR = BASE_DIR / 'logs'
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 SECRET_KEY = config('DJANGO_SECRET_KEY', default='dev-key-change-in-production')
 DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
@@ -30,7 +32,9 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_filters',
     'django_extensions',
-    'authenchain',  # Main app
+    'django_celery_beat',
+    'rest_framework_simplejwt.token_blacklist',
+    'verify',  # Main app
 ]
 
 MIDDLEWARE = [
@@ -106,6 +110,13 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
 }
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Extra places to look for assets (like your custom CSS or scan images)
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # AWS S3 Storage
 if not DEBUG:
@@ -164,7 +175,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'authenchain': {
+        'verify': {
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': False,
