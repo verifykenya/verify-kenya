@@ -717,6 +717,7 @@ class VerificationCode(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=['code_value']),
+            
             models.Index(fields=['status']),
             models.Index(fields=['batch_number']),
             models.Index(fields=['product', 'status']),
